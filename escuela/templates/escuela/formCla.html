@@ -2,12 +2,12 @@
 
 
 {% block contenido %}
-    <h1>Registro de clases</h1>
+<h1>Registro de clases</h1>
 
-    <form method="POST" action="">
-        {% csrf_token %}
-        {{ form }}
-        <input type="submit" value="Enviar">
-    </form>
+<form method="POST" action="">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Enviar">
+</form>
 
 {% endblock contenido %}

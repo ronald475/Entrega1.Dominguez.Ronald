@@ -25,13 +25,15 @@ def nueva_clase(request):
 
     return render(request, "escuela/formCla.html", {"form": mi_form})
 
+
 def buscar_tema(request, tema):
     if request.GET.get("titulo"):
-        titulo=request.GET.get("titulo")
-        clases= Clase.objects.filter(titulo__icontains=titulo, tema=tema)
-        return render(request, "escuela/resultado_buscar.html", {"clases":clases})
+        titulo = request.GET.get("titulo")
+        clases = Clase.objects.filter(titulo__icontains=titulo, tema=tema)
+        return render(request, "escuela/resultado_buscar.html", {"clases": clases})
 
     return render(request, "escuela/buscar.html")
+
 
 def resultados_esc(request):
     return render(request, "escuela/resultado_buscar.html")

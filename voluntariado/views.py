@@ -43,13 +43,16 @@ def nuevo_facilitador(request):
 
     return render(request, "voluntariado/formFac.html", {"form": mi_form})
 
+
 def buscar_voluntario(request, nombre):
     if request.GET.get("nombre"):
-        nombre=request.GET.get("nombre")
-        voluntarios= Voluntario.objects.filter(nombre__icontains=nombre, nombre=nombre)
-        return render(request, "voluntariado/resultado_buscar.html", {"voluntarios":voluntarios})
+        nombre = request.GET.get("nombre")
+        voluntarios = Voluntario.objects.filter(
+            nombre__icontains=nombre, nombre=nombre)
+        return render(request, "voluntariado/resultado_buscar.html", {"voluntarios": voluntarios})
 
     return render(request, "voluntariado/buscar.html")
+
 
 def resultados_vol(request):
     return render(request, "voluntariado/resultado_buscar.html")
