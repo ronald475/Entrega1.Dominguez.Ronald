@@ -1,0 +1,16 @@
+{% extends "index.html" %}
+
+
+{% block contenido %}
+    <h1>Facilitadores</h1>
+    <a href="{% url 'NuevoFacilitador' %}">Nuevo facilitador</a>
+    <ul>
+        {% for facilitador in facilitadores %}
+            <li>
+                <a href="{% url 'VerFacilitador' facilitador.id %}">
+                    {{facilitador}}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock contenido %}

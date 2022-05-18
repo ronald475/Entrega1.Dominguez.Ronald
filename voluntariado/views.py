@@ -3,9 +3,17 @@ from voluntariado.models import Facilitador, Voluntario
 from .forms import FormFacilitador, FormVoluntario
 
 
-def inicio_voluntariado(request):
+def inicio(request):
     return render(request, "voluntariado/inicio.html")
 
+
+def facilitadores(request):
+    facilitadores = Facilitador.objects.all()
+    return render(request, "voluntariado/facilitadores.html", {"facilitadores": facilitadores})
+
+def ver_facilitador(request, id):
+    facilitador = Facilitador.objects.get(id=id)
+    return render(request, "voluntariado/ver_facilitador.html", {"facilitador":facilitador})
 
 def nuevo_voluntario(request):
     if request.method == "POST":
@@ -18,7 +26,7 @@ def nuevo_voluntario(request):
                 email=info["email"],
             )
             voluntario.save()
-            return redirect("InicioVoluntariado")
+            return redirect("Inicio")
 
     mi_form = FormVoluntario()
 
@@ -37,7 +45,7 @@ def nuevo_facilitador(request):
                 presentacion=info["sobre_ti"],
             )
             facilitador.save()
-            return redirect("InicioVoluntariado")
+            return redirect("Facilitadores")
 
     mi_form = FormFacilitador()
 

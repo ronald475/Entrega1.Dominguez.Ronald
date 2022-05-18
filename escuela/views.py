@@ -3,10 +3,6 @@ from escuela.models import Clase
 from .forms import FormClase
 
 
-def inicio_escuela(request):
-    return render(request, "escuela/inicio.html")
-
-
 def nueva_clase(request):
     if request.method == "POST":
         mi_form = FormClase(request.POST)
@@ -19,7 +15,7 @@ def nueva_clase(request):
                 fecha=info["fecha"],
             )
             clase.save()
-            return redirect("InicioEscuela")
+            return redirect("Inicio")
 
     mi_form = FormClase()
 
