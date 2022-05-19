@@ -4,12 +4,20 @@
 {% block contenido %}
     <h1>Facilitadores</h1>
     <a href="{% url 'NuevoFacilitador' %}">Nuevo facilitador</a>
-    <ul>
+    <ul style="max-width: 60vw;">
         {% for facilitador in facilitadores %}
             <li>
                 <a href="{% url 'VerFacilitador' facilitador.id %}">
                     {{facilitador}}
                 </a>
+                <div style="float: right;">
+                    <a href="{% url 'EditarFacilitador' facilitador.id %}">
+                        Editar
+                    </a>
+                    <a href="{% url 'EliminarFacilitador' facilitador.id %}">
+                        Eliminar
+                    </a>
+                </div>
             </li>
         {% endfor %}
     </ul>
