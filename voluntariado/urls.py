@@ -16,5 +16,5 @@ urlpatterns = [
     path("facilitador/eliminar/<id>", views.eliminar_facilitador, name="EliminarFacilitador"),
 
     path('buscar/<nombre>/', views.buscar_voluntario, name="BuscarVoluntario"),
-    path('buscar/resultados', views.resultados_vol, name="BuscarResultados"),
+    path('buscar/resultados', views.resultados_vol, name="BuscarResultadosVol"),
 ]

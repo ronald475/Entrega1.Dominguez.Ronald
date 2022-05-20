@@ -3,6 +3,42 @@ from escuela.models import Clase
 from .forms import FormClase
 
 
+def clases(request):
+    clases = Clase.objects.all()
+    return render(request, "escuela/clases.html", {"clases": clases})
+
+
+def ver_clase(request, id):
+    clase = Clase.objects.get(id=id)
+    return render(request, "escuela/ver_clase.html", {"clase": clase})
+
+
+def editar_clase(request, id):
+    clase = Clase.objects.get(id=id)
+
+    if request.method == "POST":
+        mi_form = FormClase(request.POST)
+        if mi_form.is_valid():
+            info = mi_form.cleaned_data
+
+            clase.titulo = info["titulo"],
+            clase.tema = info["tema"],
+            clase.contenido = info["contenido"],
+            clase.fecha = info["fecha"],
+
+            clase.save()
+            return redirect("Clases")
+
+    mi_form = FormClase(initial={
+        "titulo": clase.titulo,
+        "tema": clase.tema,
+        "contenido": clase.contenido,
+        "fecha": clase.fecha,
+    })
+
+    return render(request, "escuela/formCla.html", {"form": mi_form})
+
+
 def nueva_clase(request):
     if request.method == "POST":
         mi_form = FormClase(request.POST)
@@ -20,6 +56,13 @@ def nueva_clase(request):
     mi_form = FormClase()
 
     return render(request, "escuela/formCla.html", {"form": mi_form})
+
+
+def eliminar_clase(request, id):
+    clase = Clase.objects.get(id=id)
+    clase.delete()
+
+    return redirect("Clases")
 
 
 def buscar_tema(request, tema):

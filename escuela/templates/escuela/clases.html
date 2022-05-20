@@ -1,0 +1,24 @@
+{% extends "index.html" %}
+
+
+{% block contenido %}
+    <h1>Clases</h1>
+    <a href="{% url 'NuevaClase' %}">Nueva clase</a>
+    <ul style="max-width: 60vw;">
+        {% for clase in clases %}
+            <li>
+                <a href="{% url 'VerClase' clase.id %}">
+                    {{clase}}
+                </a>
+                <div style="float: right;">
+                    <a href="{% url 'EditarClase' clase.id %}">
+                        Editar
+                    </a>
+                    <a href="{% url 'EliminarClase' clase.id %}">
+                        Eliminar
+                    </a>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock contenido %}
