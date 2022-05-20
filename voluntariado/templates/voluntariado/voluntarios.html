@@ -1,0 +1,24 @@
+{% extends "index.html" %}
+
+
+{% block contenido %}
+    <h1>Voluntarios</h1>
+    <a href="{% url 'NuevoVoluntario' %}">Nuevo voluntario</a>
+    <ul style="max-width: 60vw;">
+        {% for voluntario in voluntarios %}
+            <li>
+                <a href="{% url 'VerVoluntario' voluntario.id %}">
+                    {{voluntario}}
+                </a>
+                <div style="float: right;">
+                    <a href="{% url 'EditarVoluntario' voluntario.id %}">
+                        Editar
+                    </a>
+                    <a href="{% url 'EliminarVoluntario' voluntario.id %}">
+                        Eliminar
+                    </a>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock contenido %}
