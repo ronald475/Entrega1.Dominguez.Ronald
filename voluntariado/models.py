@@ -12,7 +12,7 @@ class Facilitador(models.Model):
         verbose_name_plural = "Facilitadores"
 
     def __str__(self):
-        return f"{self.nombre} {self.apellido}"
+        return f"[Facilitador] {self.nombre} {self.apellido}"
 
 
 class Voluntario(models.Model):
@@ -21,4 +21,4 @@ class Voluntario(models.Model):
     email = models.EmailField()
 
     def __str__(self):
-        return f"{self.nombre} {self.apellido}"
+        return f"[Voluntario] {self.nombre} {self.apellido}"
