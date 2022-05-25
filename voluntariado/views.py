@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from voluntariado.models import Facilitador, Voluntario
-from .forms import FormFacilitador, FormVoluntario
+from .forms import FormFacilitador, FormRegistrarse, FormVoluntario
 
 
 def inicio(request):
@@ -48,13 +48,31 @@ def nuevo_facilitador(request):
         mi_form = FormFacilitador(request.POST)
         if mi_form.is_valid():
             info = mi_form.cleaned_data
-            facilitador = Facilitador(
-                nombre=info["nombre"],
-                apellido=info["apellido"],
-                email=info["email"],
-                presentacion=info["presentacion"],
-            )
+
+            pass1 = info.get("password1")
+            pass2 = info.get("password2")
+            nombre = info.get("nombre")
+            apellido = info.get("apellido")
+            email = info.get("email")
+            data = {
+                "username": nombre + apellido,
+                "password1": pass1,
+                "password2": pass2,
+                "email": email,
+            }
+
+            form_registro = FormRegistrarse(data)
+            if form_registro.is_valid():
+                form_registro.save()
+                
+                facilitador = Facilitador(
+                    nombre=nombre,
+                    apellido=apellido,
+                    email=email,
+                    presentacion=info.get("presentacion"),
+                )
             facilitador.save()
+            
             return redirect("Facilitadores")
 
     mi_form = FormFacilitador()
