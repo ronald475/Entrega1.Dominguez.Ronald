@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from voluntariado.models import Facilitador, Voluntario
 from .forms import FormFacilitador, FormRegistrarse, FormVoluntario
+from django.contrib.auth.models import User
 
 
 def inicio(request):
@@ -54,8 +55,9 @@ def nuevo_facilitador(request):
             nombre = info.get("nombre")
             apellido = info.get("apellido")
             email = info.get("email")
+            username = nombre + apellido
             data = {
-                "username": nombre + apellido,
+                "username": username,
                 "password1": pass1,
                 "password2": pass2,
                 "email": email,
@@ -70,10 +72,13 @@ def nuevo_facilitador(request):
                     apellido=apellido,
                     email=email,
                     presentacion=info.get("presentacion"),
+                    usuario=User.objects.get(username=username)
                 )
-            facilitador.save()
+                facilitador.save()
             
-            return redirect("Facilitadores")
+                return redirect("Facilitadores")
+            else:
+                print(form_registro.errors)
 
     mi_form = FormFacilitador()
 
