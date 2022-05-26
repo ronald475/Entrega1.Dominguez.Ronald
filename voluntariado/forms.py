@@ -32,3 +32,7 @@ class FormVoluntario(forms.Form):
     nombre = forms.CharField(max_length=40)
     apellido = forms.CharField(max_length=40)
     email = forms.EmailField()
+    password1 = forms.CharField(label="Contraseña", widget=forms.PasswordInput)
+    password2 = forms.CharField(
+        label="Repita la contraseña", widget=forms.PasswordInput
+    )
