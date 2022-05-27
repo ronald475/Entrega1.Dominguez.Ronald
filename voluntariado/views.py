@@ -2,11 +2,12 @@ from django.shortcuts import render, redirect
 from voluntariado.models import Facilitador, Voluntario
 from .forms import FormFacilitador, FormRegistrarse, FormVoluntario
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.core.exceptions import ObjectDoesNotExist
 
 
 def inicio(request):
     return render(request, "voluntariado/inicio.html")
-
 
 def facilitadores(request):
     facilitadores = Facilitador.objects.all()
@@ -18,6 +19,21 @@ def ver_facilitador(request, id):
     return render(request, "voluntariado/ver_facilitador.html", {"facilitador": facilitador})
 
 
+def es_admin_o_facilitador(user):
+    if not user.is_authenticated:
+        return False
+
+    if user.is_staff:
+        return True
+
+    try:
+        facilitador = Facilitador.objects.count(usuario=user.id)
+    except ObjectDoesNotExist:
+        facilitador = None
+    
+    return facilitador is not None
+
+@user_passes_test(es_admin_o_facilitador)
 def editar_facilitador(request, id):
     facilitador = Facilitador.objects.get(id=id)
 
@@ -44,6 +60,10 @@ def editar_facilitador(request, id):
     return render(request, "voluntariado/formFac.html", {"form": mi_form})
 
 
+def es_admin(user):
+    return user.is_authenticated and user.is_staff
+
+@user_passes_test(es_admin)
 def nuevo_facilitador(request):
     if request.method == "POST":
         mi_form = FormFacilitador(request.POST)
@@ -85,11 +105,15 @@ def nuevo_facilitador(request):
     return render(request, "voluntariado/formFac.html", {"form": mi_form})
 
 
+@login_required
 def eliminar_facilitador(request, id):
-    facilitador = Facilitador.objects.get(id=id)
-    facilitador.delete()
+    if request.user.is_staff or request.user.id == id:
+        facilitador = Facilitador.objects.get(id=id)
+        facilitador.delete()
 
-    return redirect("Facilitadores")
+        return redirect("Facilitadores")
+    else:
+        redirect("Inicio")
 
 
 def voluntarios(request):
@@ -131,13 +155,35 @@ def nuevo_voluntario(request):
         mi_form = FormVoluntario(request.POST)
         if mi_form.is_valid():
             info = mi_form.cleaned_data
-            voluntario = Voluntario(
-                nombre=info["nombre"],
-                apellido=info["apellido"],
-                email=info["email"],
-            )
-            voluntario.save()
-            return redirect("Inicio")
+
+            pass1 = info.get("password1")
+            pass2 = info.get("password2")
+            nombre = info.get("nombre")
+            apellido = info.get("apellido")
+            email = info.get("email")
+            username = nombre + apellido
+            data = {
+                "username": username,
+                "password1": pass1,
+                "password2": pass2,
+                "email": email,
+            }
+
+            form_registro = FormRegistrarse(data)
+            if form_registro.is_valid():
+                form_registro.save()
+                
+                voluntario = Voluntario(
+                    nombre=nombre,
+                    apellido=apellido,
+                    email=email,
+                    usuario=User.objects.get(username=username)
+                )
+                voluntario.save()
+            
+                return redirect("Voluntarios")
+            else:
+                print(form_registro.errors)
 
     mi_form = FormVoluntario()
 
