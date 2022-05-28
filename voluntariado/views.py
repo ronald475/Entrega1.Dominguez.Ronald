@@ -4,6 +4,7 @@ from .forms import FormFacilitador, FormRegistrarse, FormVoluntario
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth import login, authenticate, logout
 
 
 def inicio(request):
@@ -197,15 +198,20 @@ def eliminar_voluntario(request, id):
     return redirect("Voluntarios")
 
 
-def buscar_voluntario(request, nombre):
-    if request.GET.get("nombre"):
-        nombre = request.GET.get("nombre")
-        voluntarios = Voluntario.objects.filter(
-            nombre__icontains=nombre, nombre=nombre)
-        return render(request, "voluntariado/resultado_buscar.html", {"voluntarios": voluntarios})
+def login_request(request):
+    if request.method == "POST":
+        username = request.POST["username"]
+        password = request.POST["password"]
 
-    return render(request, "voluntariado/buscar.html")
+        user = authenticate(username=username, password=password)
+        if user:
+            login(request, user)
+            return redirect("Inicio")
+    
+    return render(request, "voluntariado/login.html")
 
 
-def resultados_vol(request):
-    return render(request, "voluntariado/resultado_buscar.html")
+@login_required
+def logout_request(request):
+    logout(request)
+    return redirect("Inicio")

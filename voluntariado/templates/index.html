@@ -56,13 +56,15 @@
 	      <div class="collapse navbar-collapse" id="ftco-nav">
 	        <ul class="navbar-nav ml-auto">
 	        	<li class="nav-item"><a href="{% url 'Inicio' %}" class="nav-link">Inicio</a></li>
-	        	<li class="nav-item active"><a href="" class="nav-link">Vacío</a></li>
 			  <li class="nav-item"><a href="{% url 'Facilitadores' %}" class="nav-link">Facilitadores</a></li>
 			  <li class="nav-item"><a href="{% url 'Voluntarios' %}" class="nav-link">Voluntarios</a></li>
 	          <li class="nav-item"><a href="{% url 'Clases' %}" class="nav-link">Clases</a></li>
 			  <li class="nav-item"><a href="" class="nav-link">About vacío</a></li>
-	          <li class="nav-item"><a href="{% url 'BuscarResultadosVol' %}" class="nav-link">Buscar voluntario</a></li>
-			  <li class="nav-item"><a href="{% url 'BuscarResultadosCla' %}" class="nav-link">Buscar clase</a></li>
+			  {% if not user.is_authenticated %}
+			  	<li class="nav-item"><a href="{% url 'Login' %}" class="nav-link">Login</a></li>
+			  {% else %}
+			  	<li class="nav-item"><a href="{% url 'Logout' %}" class="nav-link">Logout</a></li>
+			  {% endif %}
 	        </ul>
 	      </div>
 	    </div>

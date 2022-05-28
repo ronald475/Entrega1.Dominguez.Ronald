@@ -8,8 +8,4 @@ urlpatterns = [
     path("clase/<id>", views.ver_clase, name="VerClase"),
     path("clase/editar/<id>", views.editar_clase, name="EditarClase"),
     path("clase/eliminar/<id>", views.eliminar_clase, name="EliminarClase"),
-
-
-    path('buscar/<tema>/', views.buscar_tema, name="BuscarClase"),
-    path('buscar/resultados', views.resultados_esc, name="BuscarResultadosCla"),
 ]
