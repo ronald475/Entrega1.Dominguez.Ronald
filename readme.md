@@ -11,3 +11,5 @@ Cada modelo tiene un formulario propio que permite ingresar datos a la base de d
 
 Se espera que con el modelo "Clase", el administrador de la página pueda crear eventos programados (con fecha) en los que se impartiran clases de interes general para los "Voluntarios" de Canito. Estas clases podrán ser dirigidas por los "Facilitadores" registrados en canito
 (quienes son también voluntarios), y la asistencia no tendrá requerimientos, ya que es libre y gratuita.
+
+El proyecto tiene un superusuario, "canito", cuya contraseña es "123".
